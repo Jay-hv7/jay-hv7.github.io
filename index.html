@@ -213,6 +213,7 @@
 
         section {
             margin-bottom: 6rem;
+            scroll-margin-top: 100px; /* Account for sticky nav */
         }
 
         .section-title {
@@ -609,7 +610,7 @@
 
     <main>
         <!-- Projects Section -->
-        <section class="reveal" id="projects">
+        <section id="projects">
             <h2 class="section-title">Agentic AI Projects</h2>
             
             <!-- Category Filter -->
@@ -713,7 +714,7 @@
         </section>
 
         <!-- Blog Section -->
-        <section class="reveal" id="blogs">
+        <section id="blogs">
             <h2 class="section-title">Blog & Articles</h2>
             
             <div class="blog-grid">
@@ -872,6 +873,15 @@
 
         document.querySelectorAll('.reveal').forEach(element => {
             observer.observe(element);
+        });
+
+        // Make main sections visible immediately
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainSections = document.querySelectorAll('section');
+            mainSections.forEach(section => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            });
         });
 
         // Smooth scroll for anchor links
