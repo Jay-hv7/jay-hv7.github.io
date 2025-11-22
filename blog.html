@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Dr. Jayashree HV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #151515;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a8a8a8;
+            --accent-warm: #ff8c42;
+            --accent-glow: #ffa366;
+            --border-subtle: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 140, 66, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 140, 66, 0.05) 0%, transparent 50%);
+            animation: gradientShift 20s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-5%, -5%) rotate(5deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+
+        .nav-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-warm);
+            text-decoration: none;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--accent-warm);
+            gap: 0.75rem;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 2rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .page-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Blog Post */
+        .blog-post {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            scroll-margin-top: 100px;
+        }
+
+        .post-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .post-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-warm);
+            font-weight: 600;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .post-tag {
+            padding: 0.35rem 0.85rem;
+            background: rgba(255, 140, 66, 0.1);
+            border: 1px solid rgba(255, 140, 66, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-glow);
+        }
+
+        .post-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .post-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .post-content h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .post-content h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.25rem;
+        }
+
+        .post-content ul, .post-content ol {
+            margin: 1rem 0 1.5rem 2rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .post-content code {
+            background: var(--bg-primary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--accent-glow);
+        }
+
+        .post-content pre {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .post-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .post-content blockquote {
+            border-left: 4px solid var(--accent-warm);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .post-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .share-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .share-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            border-color: var(--accent-warm);
+            color: var(--accent-warm);
+            transform: translateY(-2px);
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-warm);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-glow);
+            transform: translateY(-5px);
+        }
+
+        /* Footer */
+        footer {
+            max-width: 900px;
+            margin: 4rem auto 2rem;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .blog-post {
+                padding: 2rem 1.5rem;
+            }
+
+            .post-title {
+                font-size: 1.75rem;
+            }
+
+            .post-content {
+                font-size: 1rem;
+            }
+
+            .post-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">Dr. Jayashree HV</a>
+            <a href="index.html" class="back-link">
+                ← Back to Portfolio
+            </a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <h1 class="page-title">Blog & Articles</h1>
+        <p class="page-subtitle">Thoughts on Agentic AI, Machine Learning, and the Future of Autonomous Systems</p>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Blog Post 1 -->
+        <article class="blog-post" id="post1">
+            <div class="post-header">
+                <div class="post-meta">
+                    <div class="post-date">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z" fill="currentColor"/>
+                        </svg>
+                        November 15, 2024
+                    </div>
+                    <div class="post-tags">
+                        <span class="post-tag">Agentic AI</span>
+                        <span class="post-tag">Machine Learning</span>
+                        <span class="post-tag">Automation</span>
+                    </div>
+                </div>
+                <h2 class="post-title">The Future of Agentic AI: Beyond Simple Automation</h2>
+            </div>
+
+            <div class="post-content">
+                <p>
+                    Artificial Intelligence has evolved dramatically over the past few years, moving from simple pattern recognition to systems that can reason, plan, and act autonomously. Agentic AI represents the next frontier in this evolution—systems that don't just respond to prompts, but actively pursue goals, make decisions, and adapt to changing circumstances.
+                </p>
+
+                <h2>What Makes AI "Agentic"?</h2>
+                <p>
+                    Traditional AI systems are reactive: they wait for input, process it, and return output. Agentic AI systems, however, exhibit key characteristics that set them apart:
+                </p>
+
+                <ul>
+                    <li><strong>Goal-Directed Behavior:</strong> They work towards specific objectives without constant human guidance</li>
+                    <li><strong>Planning and Reasoning:</strong> They can break down complex tasks into manageable steps</li>
+                    <li><strong>Environmental Awareness:</strong> They monitor and respond to changes in their operating context</li>
+                    <li><strong>Tool Use:</strong> They can select and employ appropriate tools to accomplish tasks</li>
+                    <li><strong>Learning and Adaptation:</strong> They improve their performance based on feedback and experience</li>
+                </ul>
+
+                <h2>Real-World Applications</h2>
+                <p>
+                    The practical applications of agentic AI are already transforming various industries. In software development, autonomous coding agents can review code, identify bugs, and suggest improvements without explicit instructions. In research, multi-agent systems can collaborate to gather information from diverse sources, synthesize findings, and generate comprehensive reports.
+                </p>
+
+                <h3>The Multi-Agent Paradigm</h3>
+                <p>
+                    One of the most promising directions in agentic AI is the development of multi-agent systems. Instead of relying on a single, monolithic AI, these systems coordinate multiple specialized agents, each with specific capabilities and responsibilities. This approach mirrors how human teams work, with different experts contributing their unique skills to solve complex problems.
+                </p>
+
+                <blockquote>
+                    "The future of AI isn't about building one superintelligent agent, but about orchestrating ecosystems of specialized agents that collaborate effectively."
+                </blockquote>
+
+                <h2>Challenges and Considerations</h2>
+                <p>
+                    Despite the exciting potential, agentic AI systems face several challenges. Ensuring reliability and safety when agents operate with increased autonomy is paramount. We need robust frameworks for:
+                </p>
+
+                <ul>
+                    <li>Defining clear boundaries and constraints for agent behavior</li>
+                    <li>Monitoring and auditing agent decisions and actions</li>
+                    <li>Handling failure modes and unexpected situations gracefully</li>
+                    <li>Aligning agent objectives with human values and intentions</li>
+                </ul>
+
+                <h2>Looking Ahead</h2>
+                <p>
+                    As we continue to develop more sophisticated agentic AI systems, the line between automation and true autonomy will become increasingly blurred. The key to success lies not just in technical capabilities, but in thoughtful design that keeps humans in the loop while leveraging AI's strengths in processing information and executing tasks at scale.
+                </p>
+
+                <p>
+                    The future of work, research, and problem-solving will be defined by our ability to effectively collaborate with these intelligent agents. Those who learn to design, deploy, and work alongside agentic AI systems will be at the forefront of this technological revolution.
+                </p>
+            </div>
+
+            <div class="post-footer">
+                <div class="share-section">
+                    <span class="share-label">Share:</span>
+                    <div class="share-buttons">
+                        <a href="#" class="share-btn" title="Share on Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="share-btn" title="Share on LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                                <circle cx="4" cy="4" r="2"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Blog Post 2 -->
+        <article class="blog-post" id="post2">
+            <div class="post-header">
+                <div class="post-meta">
+                    <div class="post-date">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z" fill="currentColor"/>
+                        </svg>
+                        October 28, 2024
+                    </div>
+                    <div class="post-tags">
+                        <span class="post-tag">LangChain</span>
+                        <span class="post-tag">Multi-Agent</span>
+                        <span class="post-tag">Tutorial</span>
+                    </div>
+                </div>
+                <h2 class="post-title">Building Collaborative Multi-Agent Systems with LangChain</h2>
+            </div>
+
+            <div class="post-content">
+                <p>
+                    Multi-agent systems represent one of the most powerful patterns in modern AI development. By coordinating multiple specialized agents, we can tackle complex problems that would be difficult or impossible for a single agent to handle effectively. In this article, we'll explore how to build collaborative multi-agent systems using LangChain.
+                </p>
+
+                <h2>Why Multi-Agent Systems?</h2>
+                <p>
+                    The power of multi-agent systems lies in their ability to decompose complex tasks into specialized subtasks. Just as a software engineering team consists of frontend developers, backend engineers, and DevOps specialists, a multi-agent system can include:
+                </p>
+
+                <ul>
+                    <li>Research agents that gather and verify information</li>
+                    <li>Analysis agents that process and interpret data</li>
+                    <li>Writing agents that synthesize findings into coherent reports</li>
+                    <li>Coordination agents that manage workflow and communication</li>
+                </ul>
+
+                <h2>Designing Your Agent Architecture</h2>
+                <p>
+                    The first step in building a multi-agent system is designing a clear architecture. Consider the following patterns:
+                </p>
+
+                <h3>1. Hierarchical Structure</h3>
+                <p>
+                    In a hierarchical system, a coordinator agent manages other specialized agents. This pattern works well when you need clear task delegation and centralized decision-making.
+                </p>
+
+                <h3>2. Peer-to-Peer Collaboration</h3>
+                <p>
+                    Agents communicate directly with each other, negotiating and coordinating their actions. This pattern is more flexible but requires sophisticated communication protocols.
+                </p>
+
+                <h3>3. Pipeline Architecture</h3>
+                <p>
+                    Agents work in sequence, with each agent's output becoming the next agent's input. This pattern is ideal for workflows with clear stages.
+                </p>
+
+                <h2>Implementation with LangChain</h2>
+                <p>
+                    LangChain provides excellent tools for building multi-agent systems through its agent framework. Here's a conceptual overview of the key components:
+                </p>
+
+                <pre><code>from langchain.agents import Agent, AgentExecutor
+from langchain.llms import ChatOpenAI
+from langchain.tools import Tool
+
+# Define specialized agents
+research_agent = Agent(
+    name="Researcher",
+    role="Information Gathering",
+    tools=[web_search, database_query],
+    llm=ChatOpenAI()
+)
+
+analysis_agent = Agent(
+    name="Analyzer",
+    role="Data Analysis",
+    tools=[statistical_analysis, visualization],
+    llm=ChatOpenAI()
+)</code></pre>
+
+                <h2>Communication Patterns</h2>
+                <p>
+                    Effective communication between agents is crucial. You'll need to establish:
+                </p>
+
+                <ul>
+                    <li><strong>Message Formats:</strong> Standardized structures for agent communication</li>
+                    <li><strong>Coordination Protocols:</strong> Rules for how agents request help and share results</li>
+                    <li><strong>Memory Systems:</strong> Shared or individual memory for maintaining context</li>
+                    <li><strong>Error Handling:</strong> Strategies for dealing with agent failures</li>
+                </ul>
+
+                <h2>Best Practices</h2>
+                <p>
+                    Through building several multi-agent systems, I've learned these key lessons:
+                </p>
+
+                <ol>
+                    <li><strong>Start Simple:</strong> Begin with two agents and expand gradually</li>
+                    <li><strong>Clear Roles:</strong> Each agent should have a well-defined responsibility</li>
+                    <li><strong>Logging:</strong> Comprehensive logging is essential for debugging multi-agent interactions</li>
+                    <li><strong>Timeout Mechanisms:</strong> Prevent infinite loops in agent communication</li>
+                    <li><strong>Human in the Loop:</strong> Include checkpoints where humans can review and approve agent decisions</li>
+                </ol>
+
+                <h2>Real-World Applications</h2>
+                <p>
+                    Multi-agent systems excel in scenarios like:
+                </p>
+
+                <ul>
+                    <li>Comprehensive research and report generation</li>
+                    <li>Complex data analysis pipelines</li>
+                    <li>Software development workflows (planning, coding, testing, deployment)</li>
+                    <li>Customer service systems with specialized handling for different query types</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>
+                    Building effective multi-agent systems requires careful design, clear communication protocols, and iterative refinement. The investment pays off in systems that can handle complex, multi-faceted tasks with greater reliability and sophistication than single-agent approaches.
+                </p>
+
+                <p>
+                    As the tooling continues to mature, we'll see multi-agent systems become the standard approach for tackling ambitious AI applications. Start experimenting now to position yourself at the forefront of this exciting development.
+                </p>
+            </div>
+
+            <div class="post-footer">
+                <div class="share-section">
+                    <span class="share-label">Share:</span>
+                    <div class="share-buttons">
+                        <a href="#" class="share-btn" title="Share on Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="share-btn" title="Share on LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                                <circle cx="4" cy="4" r="2"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Blog Post 3 -->
+        <article class="blog-post" id="post3">
+            <div class="post-header">
+                <div class="post-meta">
+                    <div class="post-date">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z" fill="currentColor"/>
+                        </svg>
+                        October 10, 2024
+                    </div>
+                    <div class="post-tags">
+                        <span class="post-tag">RAG</span>
+                        <span class="post-tag">Vector Databases</span>
+                        <span class="post-tag">LLMs</span>
+                    </div>
+                </div>
+                <h2 class="post-title">RAG Systems: Enhancing AI with Real-Time Knowledge Retrieval</h2>
+            </div>
+
+            <div class="post-content">
+                <p>
+                    Large Language Models (LLMs) are incredibly powerful, but they have a fundamental limitation: they only know what was in their training data. Retrieval-Augmented Generation (RAG) systems address this by combining the reasoning capabilities of LLMs with the ability to access and utilize current, domain-specific information.
+                </p>
+
+                <h2>The RAG Architecture</h2>
+                <p>
+                    A RAG system consists of three main components:
+                </p>
+
+                <h3>1. Knowledge Base</h3>
+                <p>
+                    Your documents, data, and information are processed and stored in a vector database. This could include:
+                </p>
+                <ul>
+                    <li>Internal company documents and wikis</li>
+                    <li>Product documentation and manuals</li>
+                    <li>Research papers and technical specifications</li>
+                    <li>Customer support transcripts and FAQs</li>
+                </ul>
+
+                <h3>2. Retrieval System</h3>
+                <p>
+                    When a user asks a question, the system searches the knowledge base for relevant information. This typically involves:
+                </p>
+                <ul>
+                    <li>Converting the query into a vector embedding</li>
+                    <li>Performing similarity search in the vector database</li>
+                    <li>Ranking and selecting the most relevant documents</li>
+                    <li>Extracting pertinent passages from those documents</li>
+                </ul>
+
+                <h3>3. Generation System</h3>
+                <p>
+                    The LLM receives both the user's question and the retrieved context, then generates a response that synthesizes the information. This ensures answers are:
+                </p>
+                <ul>
+                    <li>Grounded in actual documents (reducing hallucination)</li>
+                    <li>Current and up-to-date</li>
+                    <li>Specific to your domain</li>
+                    <li>Traceable back to source documents</li>
+                </ul>
+
+                <h2>Why Vector Databases?</h2>
+                <p>
+                    Traditional keyword-based search falls short when dealing with semantic similarity. Vector databases store documents as high-dimensional vectors that capture semantic meaning. This allows the system to find relevant information even when the exact words don't match.
+                </p>
+
+                <blockquote>
+                    "Vector search doesn't just match words; it understands meaning and context, making it far more effective for semantic retrieval."
+                </blockquote>
+
+                <h2>Implementation Considerations</h2>
+                <p>
+                    Building an effective RAG system requires attention to several key factors:
+                </p>
+
+                <h3>Chunking Strategy</h3>
+                <p>
+                    How you split your documents matters enormously. Chunks should be:
+                </p>
+                <ul>
+                    <li>Large enough to contain meaningful context</li>
+                    <li>Small enough to be precise and relevant</li>
+                    <li>Overlapping slightly to avoid losing information at boundaries</li>
+                </ul>
+
+                <h3>Embedding Models</h3>
+                <p>
+                    Choose embedding models that are appropriate for your domain. General-purpose models work well for many cases, but specialized models can significantly improve performance for technical or domain-specific content.
+                </p>
+
+                <h3>Retrieval Parameters</h3>
+                <p>
+                    Fine-tune how many documents to retrieve and the similarity threshold. Too few results might miss important context; too many can overwhelm the LLM with irrelevant information.
+                </p>
+
+                <h2>Advanced RAG Techniques</h2>
+                <p>
+                    As the field matures, several advanced patterns have emerged:
+                </p>
+
+                <h3>Hybrid Search</h3>
+                <p>
+                    Combine vector similarity search with traditional keyword search for better recall and precision.
+                </p>
+
+                <h3>Re-ranking</h3>
+                <p>
+                    Use a separate model to re-rank retrieved results based on their relevance to the specific query.
+                </p>
+
+                <h3>Query Expansion</h3>
+                <p>
+                    Automatically expand or rephrase queries to improve retrieval coverage.
+                </p>
+
+                <h3>Contextual Compression</h3>
+                <p>
+                    Extract only the most relevant portions of retrieved documents to maximize information density while staying within token limits.
+                </p>
+
+                <h2>Measuring Success</h2>
+                <p>
+                    Evaluate your RAG system using metrics like:
+                </p>
+                <ul>
+                    <li><strong>Retrieval Accuracy:</strong> Are the right documents being found?</li>
+                    <li><strong>Answer Quality:</strong> Are responses accurate and helpful?</li>
+                    <li><strong>Citation Accuracy:</strong> Do citations correctly point to source material?</li>
+                    <li><strong>Latency:</strong> Is the system fast enough for your use case?</li>
+                </ul>
+
+                <h2>Real-World Applications</h2>
+                <p>
+                    RAG systems are transforming how organizations leverage their knowledge:
+                </p>
+                <ul>
+                    <li><strong>Customer Support:</strong> Agents providing answers grounded in documentation</li>
+                    <li><strong>Internal Q&A:</strong> Employees quickly finding information in company knowledge bases</li>
+                    <li><strong>Research Assistance:</strong> Researchers exploring large corpora of papers and documents</li>
+                    <li><strong>Technical Documentation:</strong> Developers getting contextual help with APIs and frameworks</li>
+                </ul>
+
+                <h2>Looking Forward</h2>
+                <p>
+                    RAG represents a pragmatic middle ground between fully training custom models and using general-purpose LLMs out-of-the-box. As vector databases and embedding models continue to improve, RAG systems will become even more powerful and accessible.
+                </p>
+
+                <p>
+                    The key to success lies in thoughtful design: understanding your use case, choosing appropriate tools, and continuously iterating based on real-world performance. Start simple, measure results, and refine your approach based on what you learn.
+                </p>
+            </div>
+
+            <div class="post-footer">
+                <div class="share-section">
+                    <span class="share-label">Share:</span>
+                    <div class="share-buttons">
+                        <a href="#" class="share-btn" title="Share on Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="share-btn" title="Share on LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                                <circle cx="4" cy="4" r="2"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </div>
+
+    <footer>
+        <p>Dr. Jayashree HV · Building the future with Agentic AI · 2025</p>
+    </footer>
+
+    <script>
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scroll to posts from hash
+        if (window.location.hash) {
+            setTimeout(() => {
+                const element = document.querySelector(window.location.hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }
+    </script>
+</body>
+</html>
